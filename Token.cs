@@ -10,139 +10,140 @@ namespace Befunge
     public abstract class Token
     {
         public char Lexeme {get;}
-        public Token(char lexeme) {
+        public int Row {get;}
+        public int Column {get;}
+        public Token(char lexeme, int row, int col) {
             Lexeme = lexeme;
+            Row = row;
+            Column = col;
         }
         public virtual CharToken AsCharToken() {
-            return new CharToken(Lexeme);
+            return new CharToken(Lexeme, Row, Column);
         }
         public override string ToString(){
-            return $"{this.GetType().Name}('{Lexeme}')";
+            return $"{this.GetType().Name}('{Lexeme}', {Row}, {Column})";
         }
     }
 
     public class AddToken : Token {
-        public AddToken(char lexeme) : base(lexeme) {}
+        public AddToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class SubtractToken : Token {
-        public SubtractToken(char lexeme) : base(lexeme) {}
+        public SubtractToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class MultiplyToken : Token {
-        public MultiplyToken(char lexeme) : base(lexeme) {}
+        public MultiplyToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class DivideToken : Token {
-        public DivideToken(char lexeme) : base(lexeme) {}
+        public DivideToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class ModulusToken : Token {
-        public ModulusToken(char lexeme) : base(lexeme) {}
+        public ModulusToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class NotToken : Token {
-        public NotToken(char lexeme) : base(lexeme) {}
+        public NotToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class GreaterToken : Token {
-        public GreaterToken(char lexeme) : base(lexeme) {}
+        public GreaterToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class RightToken : Token {
-        public RightToken(char lexeme) : base(lexeme) {}
+        public RightToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class LeftToken : Token {
-        public LeftToken(char lexeme) : base(lexeme) {}
+        public LeftToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class UpToken : Token {
-        public UpToken(char lexeme) : base(lexeme) {}
+        public UpToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class DownToken : Token {
-        public DownToken(char lexeme) : base(lexeme) {}
+        public DownToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class RandomToken : Token {
-        public RandomToken(char lexeme) : base(lexeme) {}
+        public RandomToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class HorizontalIfToken : Token {
-        public HorizontalIfToken(char lexeme) : base(lexeme) {}
+        public HorizontalIfToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class VerticalIfToken : Token {
-        public VerticalIfToken(char lexeme) : base(lexeme) {}
+        public VerticalIfToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class QuoteToken : Token {
-        public QuoteToken(char lexeme) : base(lexeme) {}
+        public QuoteToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
         public override CharToken AsCharToken() {
             throw new TokenizerException("Cannot convert quote (\") to CharToken");
         }
     }
 
     public class DuplicateToken : Token {
-        public DuplicateToken(char lexeme) : base(lexeme) {}
+        public DuplicateToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class SwapToken : Token {
-        public SwapToken(char lexeme) : base(lexeme) {}
+        public SwapToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class PopToken : Token {
-        public PopToken(char lexeme) : base(lexeme) {}
+        public PopToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class OutputIntToken : Token {
-        public OutputIntToken(char lexeme) : base(lexeme) {}
+        public OutputIntToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class OutputCharToken : Token {
-        public OutputCharToken(char lexeme) : base(lexeme) {}
+        public OutputCharToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class JumpToken : Token {
-        public JumpToken(char lexeme) : base(lexeme) {}
+        public JumpToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class GetToken : Token {
-        public GetToken(char lexeme) : base(lexeme) {}
+        public GetToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class PutToken : Token {
-        public PutToken(char lexeme) : base(lexeme) {}
+        public PutToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class InputIntToken : Token {
-        public InputIntToken(char lexeme) : base(lexeme) {}
+        public InputIntToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class InputCharToken : Token {
-        public InputCharToken(char lexeme) : base(lexeme) {}
+        public InputCharToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class HaltToken : Token {
-        public HaltToken(char lexeme) : base(lexeme) {}
+        public HaltToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class NumberToken : Token {
         public byte Value {get; private set;}
-        public NumberToken(char lexeme) : base(lexeme) {
+        public NumberToken(char lexeme, int row, int col) : base(lexeme, row, col) {
             Value = byte.Parse(lexeme.ToString());
         }
     }
 
     public class CharToken : Token {
-        public CharToken(char lexeme) : base(lexeme) {}
+        public CharToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 
     public class BlankToken : Token {
-        public BlankToken() : base(' ') {}
-        public override CharToken AsCharToken() {
-            throw new TokenizerException("Cannot convert BlankToken to CharToken");
-        }
+        public BlankToken(char lexeme, int row, int col) : base(lexeme, row, col) {}
     }
 }
