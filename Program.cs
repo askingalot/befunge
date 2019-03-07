@@ -25,6 +25,9 @@ namespace Befunge
             foreach(var token in tokenizer.Tokenize()) {
                 Console.WriteLine(token);
             }
+
+            var field = new PlayField();
+            Console.WriteLine(field);
         }
     }
 
