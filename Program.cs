@@ -8,11 +8,13 @@ namespace Befunge
     {
         static void Main(string[] args)
         {
-            if (args.Length == 0 ) {
+            if (args.Length == 0)
+            {
                 Console.WriteLine("Usage: befunge <source.bf>");
                 Environment.Exit(1);
             }
-            if (!File.Exists(args[0])) {
+            if (!File.Exists(args[0]))
+            {
                 Console.WriteLine($"Invalid filename: {args[0]}");
                 Environment.Exit(1);
             }
@@ -21,14 +23,9 @@ namespace Befunge
             Console.WriteLine(source);
 
             var tokenizer = new Tokenizer(source);
-
-            foreach(var token in tokenizer.Tokenize()) {
-                Console.WriteLine(token);
-            }
-
-            var field = new PlayField();
+            var tokens = tokenizer.Tokenize();
+            var field = new PlayField(tokens);
             Console.WriteLine(field);
         }
     }
-
 }
