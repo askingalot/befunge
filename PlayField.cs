@@ -33,6 +33,12 @@ namespace Befunge
             ProgramCounter = new ProgramCounter(0, 0, this);
         }
 
+        public Token Current {
+            get {
+                return this[ProgramCounter.Row, ProgramCounter.Col];
+            }
+        }
+
         public Token this[int row, int col]
         {
             get

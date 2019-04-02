@@ -28,18 +28,4 @@ namespace Befunge
             Console.WriteLine(field);
         }
     }
-
-    public class VirtualMachine 
-    {
-        private readonly PlayField _playField;
-
-        public VirtualMachine(PlayField playField) 
-        {
-            _playField = playField;
-        }
-
-        public void Run() {
-
-        }
-    }
 }
