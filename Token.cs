@@ -173,7 +173,10 @@ namespace Befunge
 
     public class CharToken : Token
     {
-        public CharToken(char lexeme, int row, int col) : base(lexeme, row, col) { }
+        public int AsciiValue { get; }
+        public CharToken(char lexeme, int row, int col) : base(lexeme, row, col) { 
+            AsciiValue = lexeme;
+        }
     }
 
     public class BlankToken : Token

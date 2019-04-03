@@ -44,6 +44,9 @@ namespace Befunge
             get
             {
                 return _field[row, col];
+            } 
+            set {
+                _field[row, col] = value;
             }
         }
 

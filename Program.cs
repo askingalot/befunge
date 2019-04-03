@@ -25,7 +25,8 @@ namespace Befunge
             var tokenizer = new Tokenizer(source);
             var tokens = tokenizer.Tokenize();
             var field = new PlayField(tokens);
-            Console.WriteLine(field);
+            new VirtualMachine().Run(field);
+            Console.WriteLine();
         }
     }
 }
