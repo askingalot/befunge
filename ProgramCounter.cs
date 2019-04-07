@@ -26,42 +26,55 @@ namespace Befunge
             };
         }
 
-        public void Move(ProgramCounterDirection direction) {
+        public void Move(ProgramCounterDirection direction)
+        {
             Directions[direction]();
         }
 
         public void MoveUp()
         {
-            if (Row == _playField.TOP_ROW) {
+            if (Row == _playField.TOP_ROW)
+            {
                 Row = _playField.BOTTOM_ROW;
-            } else {
+            }
+            else
+            {
                 Row--;
             }
         }
 
         public void MoveDown()
         {
-            if (Row == _playField.BOTTOM_ROW) {
+            if (Row == _playField.BOTTOM_ROW)
+            {
                 Row = _playField.TOP_ROW;
-            } else {
+            }
+            else
+            {
                 Row++;
             }
         }
 
         public void MoveLeft()
         {
-            if (Col == _playField.LEFT_COL) {
+            if (Col == _playField.LEFT_COL)
+            {
                 Col = _playField.RIGHT_COL;
-            } else {
+            }
+            else
+            {
                 Col--;
             }
         }
 
         public void MoveRight()
         {
-            if (Col == _playField.RIGHT_COL) {
+            if (Col == _playField.RIGHT_COL)
+            {
                 Col = _playField.LEFT_COL;
-            } else {
+            }
+            else
+            {
                 Col++;
             }
         }

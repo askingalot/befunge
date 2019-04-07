@@ -22,8 +22,10 @@ namespace Befunge
 
             while (true)
             {
-                if (debug) {
-                    if (! (playField.Current is BlankToken)) { 
+                if (debug)
+                {
+                    if (!(playField.Current is BlankToken))
+                    {
                         Console.Error.WriteLine(
                             $"Stack: {string.Join(", ", stack.ToList())} ");
                         Console.Error.WriteLine(playField.Current);
@@ -32,9 +34,12 @@ namespace Befunge
 
                 if (stringMode)
                 {
-                    if (playField.Current is QuoteToken) {
+                    if (playField.Current is QuoteToken)
+                    {
                         stringMode = !stringMode;
-                    } else {
+                    }
+                    else
+                    {
                         stack.Push(playField.Current.AsCharToken().AsciiValue);
                     }
                 }
@@ -126,7 +131,7 @@ namespace Befunge
                             Console.Write(stack.PopOrZero());
                             break;
                         case OutputCharToken t:
-                            Console.Write(char.ConvertFromUtf32((int) stack.PopOrZero()));
+                            Console.Write(char.ConvertFromUtf32((int)stack.PopOrZero()));
                             break;
                         case JumpToken t:
                             playField.ProgramCounter.Move(currentDirection);
@@ -142,7 +147,7 @@ namespace Befunge
                         case PutToken t:
                             long c;
                             (a, b, c) = (stack.PopOrZero(), stack.PopOrZero(), stack.PopOrZero());
-                            char val = (char) c;
+                            char val = (char)c;
                             playField[a, b] = new CharToken(val, a, b);
                             break;
                         case InputIntToken t:
@@ -174,7 +179,7 @@ namespace Befunge
             {
                 Console.Write($"{prompt} ");
                 response = Console.ReadLine();
-            } while (! long.TryParse(response, out result));
+            } while (!long.TryParse(response, out result));
             return result;
         }
 

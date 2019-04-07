@@ -39,8 +39,10 @@ namespace Befunge
             ProgramCounter = new ProgramCounter(0, 0, this);
         }
 
-        public Token Current {
-            get {
+        public Token Current
+        {
+            get
+            {
                 return this[ProgramCounter.Row, ProgramCounter.Col];
             }
         }
@@ -50,8 +52,9 @@ namespace Befunge
             get
             {
                 return _field[row, col];
-            } 
-            set {
+            }
+            set
+            {
                 _field[row, col] = value;
             }
         }

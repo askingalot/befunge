@@ -1,5 +1,7 @@
-namespace Befunge {
-    public enum ProgramCounterDirection {
+namespace Befunge 
+{
+    public enum ProgramCounterDirection 
+    {
         Up,
         Down,
         Left,
