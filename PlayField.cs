@@ -6,14 +6,14 @@ namespace Befunge
 {
     public class PlayField
     {
-        private const long ROW_SIZE = 80;
-        private const long COL_SIZE = 25;
-        private Token[,] _field = new Token[COL_SIZE, ROW_SIZE];
+        private const long ROW_COUNT = 25;
+        private const long COL_COUNT = 80;
+        private Token[,] _field = new Token[ROW_COUNT, COL_COUNT];
 
-        public long LEFT_COL => 0;
-        public long RIGHT_COL => ROW_SIZE - 1;
         public long TOP_ROW => 0;
-        public long BOTTOM_ROW => COL_SIZE - 1;
+        public long BOTTOM_ROW => ROW_COUNT - 1;
+        public long LEFT_COL => 0;
+        public long RIGHT_COL => COL_COUNT - 1;
 
         public ProgramCounter ProgramCounter { get; }
 
@@ -25,9 +25,9 @@ namespace Befunge
                 _field[token.Row, token.Column] = token;
             }
 
-            for (long i = 0; i < COL_SIZE; i++)
+            for (long i = 0; i < ROW_COUNT; i++)
             {
-                for (long j = 0; j < ROW_SIZE; j++)
+                for (long j = 0; j < COL_COUNT; j++)
                 {
                     if (_field[i, j] == null)
                     {
@@ -58,14 +58,14 @@ namespace Befunge
 
         public bool IsLegalPosition(long row, long col)
         {
-            return row >= 0 && row < ROW_SIZE &&
-                   col >= 0 && col < COL_SIZE;
+            return row >= 0 && row < COL_COUNT &&
+                   col >= 0 && col < ROW_COUNT;
         }
 
         public override string ToString()
         {
             var sb = new StringBuilder();
-            for (var i = 0; i < ROW_SIZE; i++)
+            for (var i = 0; i < COL_COUNT; i++)
             {
                 sb.Append(string.Join(", ", GetRow(_field, i)));
                 sb.Append('\n');
@@ -75,7 +75,7 @@ namespace Befunge
 
         private IEnumerable<Token> GetRow(Token[,] tokens, long row)
         {
-            for (var i = 0; i < COL_SIZE; i++)
+            for (var i = 0; i < ROW_COUNT; i++)
             {
                 yield return tokens[row, i];
             }
