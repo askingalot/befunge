@@ -9,8 +9,8 @@ namespace Befunge
 
         private Dictionary<ProgramCounterDirection, Action> Directions;
 
-        public int Row { get; private set; }
-        public int Col { get; private set; }
+        public long Row { get; private set; }
+        public long Col { get; private set; }
 
         public ProgramCounter(int row, int col, PlayField playField)
         {
@@ -32,38 +32,38 @@ namespace Befunge
 
         public void MoveUp()
         {
-            if (!_playField.IsLegalPosition(Row - 1, Col))
-            {
-                throw new ArgumentOutOfRangeException();
+            if (Row == _playField.TOP_ROW) {
+                Row = _playField.BOTTOM_ROW;
+            } else {
+                Row--;
             }
-            Row--;
         }
 
         public void MoveDown()
         {
-            if (!_playField.IsLegalPosition(Row + 1, Col))
-            {
-                throw new ArgumentOutOfRangeException();
+            if (Row == _playField.BOTTOM_ROW) {
+                Row = _playField.TOP_ROW;
+            } else {
+                Row++;
             }
-            Row++;
         }
 
         public void MoveLeft()
         {
-            if (!_playField.IsLegalPosition(Row, Col - 1))
-            {
-                throw new ArgumentOutOfRangeException();
+            if (Col == _playField.LEFT_COL) {
+                Col = _playField.RIGHT_COL;
+            } else {
+                Col--;
             }
-            Col--;
         }
 
         public void MoveRight()
         {
-            if (!_playField.IsLegalPosition(Row, Col + 1))
-            {
-                throw new ArgumentOutOfRangeException();
+            if (Col == _playField.RIGHT_COL) {
+                Col = _playField.LEFT_COL;
+            } else {
+                Col++;
             }
-            Col++;
         }
     }
 }

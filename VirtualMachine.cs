@@ -7,12 +7,11 @@ namespace Befunge
 {
     public class VirtualMachine
     {
-
-        public void Run(PlayField playField)
+        public void Run(PlayField playField, bool debug = false)
         {
-            var stack = new Stack<int>();
+            var stack = new Stack<long>();
 
-            var isInString = false;
+            var stringMode = false;
 
             var randomForDirection = new Random();
             var availableDirections = new[] {
@@ -23,36 +22,41 @@ namespace Befunge
 
             while (true)
             {
-                //Console.WriteLine(playField.Current);
-                //stack.ToList().ForEach(Console.WriteLine);
+                if (debug) {
+                    if (! (playField.Current is BlankToken)) { 
+                        Console.Error.WriteLine(
+                            $"Stack: {string.Join(", ", stack.ToList())} ");
+                        Console.Error.WriteLine(playField.Current);
+                    }
+                }
 
-                if (isInString)
+                if (stringMode)
                 {
                     if (playField.Current is QuoteToken) {
-                        isInString = !isInString;
+                        stringMode = !stringMode;
                     } else {
                         stack.Push(playField.Current.AsCharToken().AsciiValue);
                     }
                 }
                 else
                 {
-                    int a, b;
+                    long a, b;
                     switch (playField.Current)
                     {
                         case AddToken t:
-                            (a, b) = (stack.Pop(), stack.Pop());
+                            (a, b) = (stack.PopOrZero(), stack.PopOrZero());
                             stack.Push(a + b);
                             break;
                         case SubtractToken t:
-                            (a, b) = (stack.Pop(), stack.Pop());
+                            (a, b) = (stack.PopOrZero(), stack.PopOrZero());
                             stack.Push(b - a);
                             break;
                         case MultiplyToken t:
-                            (a, b) = (stack.Pop(), stack.Pop());
+                            (a, b) = (stack.PopOrZero(), stack.PopOrZero());
                             stack.Push(a * b);
                             break;
                         case DivideToken t:
-                            (a, b) = (stack.Pop(), stack.Pop());
+                            (a, b) = (stack.PopOrZero(), stack.PopOrZero());
                             if (a != 0)
                             {
                                 stack.Push(b / a);
@@ -65,15 +69,15 @@ namespace Befunge
                             }
                             break;
                         case ModulusToken t:
-                            (a, b) = (stack.Pop(), stack.Pop());
+                            (a, b) = (stack.PopOrZero(), stack.PopOrZero());
                             stack.Push(b % a);
                             break;
                         case NotToken t:
-                            a = stack.Pop();
+                            a = stack.PopOrZero();
                             stack.Push(a == 0 ? 1 : 0);
                             break;
                         case GreaterToken t:
-                            (a, b) = (stack.Pop(), stack.Pop());
+                            (a, b) = (stack.PopOrZero(), stack.PopOrZero());
                             stack.Push(b > a ? 1 : 0);
                             break;
                         case RightToken t:
@@ -93,42 +97,42 @@ namespace Befunge
                                 availableDirections[randomForDirection.Next(availableDirections.Length)];
                             break;
                         case HorizontalIfToken t:
-                            a = stack.Pop();
+                            a = stack.PopOrZero();
                             currentDirection = a == 0
                                 ? ProgramCounterDirection.Right
                                 : ProgramCounterDirection.Left;
                             break;
                         case VerticalIfToken t:
-                            a = stack.Pop();
+                            a = stack.PopOrZero();
                             currentDirection = a == 0
                                 ? ProgramCounterDirection.Down
                                 : ProgramCounterDirection.Up;
                             break;
                         case QuoteToken t:
-                            isInString = !isInString;
+                            stringMode = !stringMode;
                             break;
                         case DuplicateToken t:
-                            stack.Push(stack.Peek());
+                            stack.Push(stack.PeekOrZero());
                             break;
                         case SwapToken t:
-                            (a, b) = (stack.Pop(), stack.Pop());
-                            stack.Push(b);
+                            (a, b) = (stack.PopOrZero(), stack.PopOrZero());
                             stack.Push(a);
+                            stack.Push(b);
                             break;
                         case PopToken t:
-                            stack.Pop();
+                            stack.PopOrZero();
                             break;
                         case OutputIntToken t:
-                            Console.Write(stack.Pop());
+                            Console.Write(stack.PopOrZero());
                             break;
                         case OutputCharToken t:
-                            Console.Write(char.ConvertFromUtf32(stack.Pop()));
+                            Console.Write(char.ConvertFromUtf32((int) stack.PopOrZero()));
                             break;
                         case JumpToken t:
                             playField.ProgramCounter.Move(currentDirection);
                             break;
                         case GetToken t:
-                            (a, b) = (stack.Pop(), stack.Pop());
+                            (a, b) = (stack.PopOrZero(), stack.PopOrZero());
                             stack.Push(
                                 playField.IsLegalPosition(a, b)
                                     ? playField[a, b].AsCharToken().AsciiValue
@@ -136,16 +140,16 @@ namespace Befunge
                             );
                             break;
                         case PutToken t:
-                            int c;
-                            (a, b, c) = (stack.Pop(), stack.Pop(), stack.Pop());
+                            long c;
+                            (a, b, c) = (stack.PopOrZero(), stack.PopOrZero(), stack.PopOrZero());
                             char val = (char) c;
                             playField[a, b] = new CharToken(val, a, b);
                             break;
                         case InputIntToken t:
-                            PromptForInt("Input a number ");
+                            stack.Push(PromptForInt("Input a number"));
                             break;
                         case InputCharToken t:
-                            PromptForInt("Input a character ");
+                            stack.Push(PromptForChar("Input a character"));
                             break;
                         case NumberToken t:
                             stack.Push(t.Value);
@@ -155,22 +159,22 @@ namespace Befunge
                         case HaltToken t:
                             return;
                         default:
-                            throw new TokenizerException("Unknown token!");
+                            throw new TokenizerException($"Unknown token: {playField.Current}");
                     }
                 }
                 playField.ProgramCounter.Move(currentDirection);
             }
         }
 
-        private int PromptForInt(string prompt)
+        private long PromptForInt(string prompt)
         {
             string response;
-            int result;
+            long result;
             do
             {
                 Console.Write($"{prompt} ");
                 response = Console.ReadLine();
-            } while (! int.TryParse(response, out result));
+            } while (! long.TryParse(response, out result));
             return result;
         }
 
@@ -184,6 +188,6 @@ namespace Befunge
             } while (response.Length > 0);
             return response[0];
         }
-     }
+    }
 }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 
@@ -8,24 +9,42 @@ namespace Befunge
     {
         static void Main(string[] args)
         {
-            if (args.Length == 0)
+            var debug = args.Any(arg => arg == "--debug");
+            var filename = args.FirstOrDefault(arg => !arg.StartsWith("--"));
+
+            if (filename == null)
             {
-                Console.WriteLine("Usage: befunge <source.bf>");
+                Console.WriteLine("Usage: befunge <source.bf> [--debug]");
                 Environment.Exit(1);
             }
-            if (!File.Exists(args[0]))
+
+            if (!File.Exists(filename))
             {
                 Console.WriteLine($"Invalid filename: {args[0]}");
                 Environment.Exit(1);
             }
 
             var source = File.OpenText(args[0]).ReadToEnd();
-            Console.WriteLine(source);
+            if (debug) {
+                Console.Error.WriteLine(source);
+            }
 
+            if (debug) {
+                Console.Error.WriteLine("Tokenizing...");
+            }
             var tokenizer = new Tokenizer(source);
             var tokens = tokenizer.Tokenize();
+
+            if (debug) {
+                Console.Error.WriteLine("Creating the playing field...");
+            }
             var field = new PlayField(tokens);
-            new VirtualMachine().Run(field);
+
+            if (debug) {
+                Console.Error.WriteLine("Running the VM...");
+            }
+            new VirtualMachine().Run(field, debug);
+
             Console.WriteLine();
         }
     }
