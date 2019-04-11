@@ -25,22 +25,26 @@ namespace Befunge
             }
 
             var source = File.OpenText(args[0]).ReadToEnd();
-            if (debug) {
+            if (debug)
+            {
                 Console.Error.WriteLine(source);
             }
 
-            if (debug) {
+            if (debug)
+            {
                 Console.Error.WriteLine("Tokenizing...");
             }
             var tokenizer = new Tokenizer(source);
             var tokens = tokenizer.Tokenize();
 
-            if (debug) {
+            if (debug)
+            {
                 Console.Error.WriteLine("Creating the playing field...");
             }
             var field = new PlayField(tokens);
 
-            if (debug) {
+            if (debug)
+            {
                 Console.Error.WriteLine("Running the VM...");
             }
             new VirtualMachine().Run(field, debug);
